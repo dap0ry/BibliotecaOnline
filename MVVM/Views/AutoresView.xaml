@@ -1,0 +1,110 @@
+﻿<Page x:Class="AppLibros.MVVM.Views.AutoresView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AppLibros.MVVM.Views"
+      mc:Ignorable="d" 
+      DataContext="{StaticResource LibrosViewModel}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AutoresView">
+
+    <Page.Resources>
+        <!-- Panel container decorado -->
+        <Style x:Key="PanelContainer" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect 
+                        ShadowDepth="3" 
+                        Color="#AAA" 
+                        Opacity="0.3" 
+                        BlurRadius="15"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Tarjeta de autor -->
+        <Style x:Key="AutorCardStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#ffffff" Offset="0"/>
+                        <GradientStop Color="#f0f0f0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CardBorder" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="12"
+                                Effect="{TemplateBinding Effect}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Ellipse Width="100" Height="100" Fill="#DDD" x:Name="AvatarCirculo"/>
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                           HorizontalAlignment="Center" 
+                                           Margin="0,10,0,0" 
+                                           FontWeight="Bold" 
+                                           FontSize="14"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CardBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="5" Color="#999" Opacity="0.5" BlurRadius="15"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="AvatarCirculo" Property="Fill" Value="#C0E0FF"/>
+                                <Setter TargetName="CardBorder" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="Autores" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,15" 
+                       Foreground="#333"/>
+            <Border Style="{StaticResource PanelContainer}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="GridAutores" ItemsSource="{Binding Autores}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource AutorCardStyle}" Content="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>
